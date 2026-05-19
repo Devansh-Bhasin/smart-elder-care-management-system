@@ -1,0 +1,67 @@
+{% extends "layout.html" %}
+
+{% block title %}My Dashboard - Elder Care Home{% endblock %}
+
+{% block content %}
+<header style="justify-content: center; text-align: center; flex-direction: column; padding: 40px 0;">
+    <h1 style="font-size: 3em; margin-bottom: 0.2em;">Hello, {{ user }}!</h1>
+    <p style="font-size: 1.5em; opacity: 0.8;">How are you feeling today?</p>
+</header>
+
+<div class="dashboard-grid" style="grid-template-columns: 1fr; max-width: 600px; margin: 0 auto; gap: 30px;">
+
+    {% if 'alerts:read' in allowed_features %}
+    <div class="card"
+        style="padding: 40px; text-align: center; border: 4px solid var(--danger-color); background: rgba(231, 76, 60, 0.1);">
+        <h2 style="font-size: 2.5em; color: var(--danger-color); margin-bottom: 20px;">I Need Help</h2>
+        <p style="font-size: 1.2em; margin-bottom: 30px;">Press this if you are not feeling well or need assistance
+            immediately.</p>
+        <form action="{{ url_for('emergency_alerts') }}" method="POST">
+            <button type="submit" class="btn btn-danger"
+                style="font-size: 2em; padding: 20px 40px; width: 100%; border-radius: 50px;">CALL STAFF</button>
+        </form>
+    </div>
+    {% endif %}
+
+    {% if 'activity:read' in allowed_features %}
+    <div class="card" style="padding: 30px; text-align: center;">
+        <h3 style="font-size: 1.8em; margin-bottom: 15px;">My Daily Schedule</h3>
+        <p style="font-size: 1.1em; opacity: 0.9;">See what's happening today: meals, walks, and fun activities!</p>
+        <a href="{{ url_for('activity_management') }}" class="btn"
+            style="font-size: 1.5em; padding: 15px 30px; margin-top: 15px;">View My Day</a>
+    </div>
+    {% endif %}
+
+    {% if 'health:read' in allowed_features %}
+    <div class="card" style="padding: 30px; text-align: center;">
+        <h3 style="font-size: 1.8em; margin-bottom: 15px;">My Health</h3>
+        <p style="font-size: 1.1em; opacity: 0.9;">Look at your latest health checkups.</p>
+        <a href="{{ url_for('health_monitoring') }}" class="btn"
+            style="font-size: 1.5em; padding: 15px 30px; margin-top: 15px;">View Health</a>
+    </div>
+    {% endif %}
+
+    {% if 'medication:read' in allowed_features %}
+    <div class="card" style="padding: 30px; text-align: center;">
+        <h3 style="font-size: 1.8em; margin-bottom: 15px;">My Medication</h3>
+        <p style="font-size: 1.1em; opacity: 0.9;">Check your medicine schedule.</p>
+        <a href="{{ url_for('medication') }}" class="btn"
+            style="font-size: 1.5em; padding: 15px 30px; margin-top: 15px;">View Medicine</a>
+    </div>
+    {% endif %}
+
+    {% if 'notifications:read' in allowed_features %}
+    <div class="card" style="padding: 30px; text-align: center;">
+        <h3 style="font-size: 1.8em; margin-bottom: 15px;">Notifications</h3>
+        <p style="font-size: 1.1em; opacity: 0.9;">See important reminders for you.</p>
+        <a href="{{ url_for('notifications') }}" class="btn"
+            style="font-size: 1.5em; padding: 15px 30px; margin-top: 15px;">Check Notices</a>
+    </div>
+    {% endif %}
+
+</div>
+
+<footer style="text-align: center; margin-top: 50px; opacity: 0.5;">
+    <a href="{{ url_for('logout') }}" style="color: white; text-decoration: none;">Log Out</a>
+</footer>
+{% endblock %}

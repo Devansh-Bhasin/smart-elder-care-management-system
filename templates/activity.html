@@ -1,0 +1,129 @@
+{% extends "layout.html" %}
+
+{% block title %}Activity Management{% endblock %}
+
+{% block content %}
+<a href="{{ url_for('dashboard') }}" class="back-link">&larr; Back to Dashboard</a>
+
+<header>
+    <h1>Activity Management</h1>
+</header>
+<div class="prototype-tag">Prototype Feature</div>
+
+{% if message %}
+<div class="alert alert-success">{{ message }}</div>
+{% endif %}
+
+{% if can_write %}
+<div style="max-width: 600px;">
+    <form method="POST">
+        <label>Resident Name</label>
+        <select name="resident_name" style="width: 100%; padding: 10px; border-radius: 4px; background: #2c3e50; color: white; border: 1px solid #444; margin-bottom: 10px;">
+            {% for res in residents %}
+            <option value="{{ res.name }}" style="background: #2c3e50; color: white;">{{ res.name }} (Room {{ res.room }})</option>
+            {% endfor %}
+        </select>
+
+        <label>Activity Type</label>
+        <select name="activity_type" style="width: 100%; padding: 10px; border-radius: 4px; background: #2c3e50; color: white; border: 1px solid #444; margin-bottom: 10px;">
+            <option style="background: #2c3e50; color: white;">Morning Walk</option>
+            <option style="background: #2c3e50; color: white;">Physical Therapy</option>
+            <option style="background: #2c3e50; color: white;">Social Hour</option>
+            <option style="background: #2c3e50; color: white;">Meals</option>
+            <option style="background: #2c3e50; color: white;">Medication Time</option>
+        </select>
+
+        <label>Date</label>
+        <input type="date" name="date" required style="width: 100%; padding: 10px; border-radius: 4px; background: rgba(255,255,255,0.1); color: white; border: 1px solid #444; margin-bottom: 10px;">
+
+        <div style="display: flex; gap: 10px;">
+            <div style="flex: 1;">
+                <label>Start Time</label>
+                <input type="time" name="start_time" required style="width: 100%; padding: 10px; border-radius: 4px; background: rgba(255,255,255,0.1); color: white; border: 1px solid #444; margin-bottom: 10px;">
+            </div>
+            <div style="flex: 1;">
+                <label>End Time</label>
+                <input type="time" name="end_time" required style="width: 100%; padding: 10px; border-radius: 4px; background: rgba(255,255,255,0.1); color: white; border: 1px solid #444; margin-bottom: 10px;">
+            </div>
+        </div>
+
+    {% if message %}
+    <div style="background: rgba(46, 204, 113, 0.2); border: 1px solid #2ecc71; color: #2ecc71; padding: 15px; border-radius: 8px; margin-bottom: 20px;">
+        {{ message }}
+    </div>
+    {% endif %}
+
+    {% if error %}
+    <div style="background: rgba(231, 76, 60, 0.2); border: 1px solid #e74c3c; color: #e74c3c; padding: 15px; border-radius: 8px; margin-bottom: 20px;">
+        {{ error }}
+    </div>
+    {% endif %}
+
+        <button type="submit" style="margin-top: 10px;">Schedule Activity</button>
+    </form>
+</div>
+{% else %}
+<div class="card" style="max-width: 600px; background: rgba(255,255,255,0.05);">
+    <p style="opacity: 0.8;">You have <b>View-Only</b> access to activity management. Please contact staff to schedule
+        or log activities.</p>
+</div>
+{% endif %}
+
+<div style="margin-top: 40px;">
+    <h2>Today's Activity Log</h2>
+    <table style="width: 100%; border-collapse: collapse; margin-top: 15px;">
+        <thead>
+            <tr style="text-align: left; border-bottom: 2px solid #444;">
+                <th style="padding: 10px;">Resident</th>
+                <th style="padding: 10px;">Activity</th>
+                <th style="padding: 10px;">Date</th>
+                <th style="padding: 10px;">Start Time</th>
+                <th style="padding: 10px;">End Time</th>
+                <th style="padding: 10px;">Status</th>
+                {% if can_write %}
+                <th style="padding: 10px;">Actions</th>
+                {% endif %}
+            </tr>
+        </thead>
+        <tbody>
+            {% for act in activities %}
+            <tr style="border-bottom: 1px solid #333;">
+                <td style="padding: 10px;">{{ act.resident }}</td>
+                <td style="padding: 10px;">{{ act.activity }}</td>
+                <td style="padding: 10px;">{{ act.date }}</td>
+                <td style="padding: 10px;">{{ act.start_time }}</td>
+                <td style="padding: 10px;">{{ act.end_time }}</td>
+                <td style="padding: 10px;">
+                    <span
+                        style="padding: 4px 8px; border-radius: 4px; font-size: 0.8em; 
+                        background: {% if act.status == 'Completed' %}rgba(46, 204, 113, 0.2){% elif act.status == 'Upcoming' %}rgba(52, 152, 219, 0.2){% elif act.status == 'Skipped' %}rgba(231, 76, 60, 0.2){% else %}rgba(149, 165, 166, 0.2){% endif %};
+                        color: {% if act.status == 'Completed' %}#2ecc71{% elif act.status == 'Upcoming' %}#3498db{% elif act.status == 'Skipped' %}#e74c3c{% else %}#95a5a6{% endif %};">
+                        {{ act.status }}
+                    </span>
+                </td>
+                {% if can_write %}
+                <td style="padding: 10px;">
+                    {% if act.status != 'Completed' and act.status != 'Skipped' %}
+                    {% if act.status == 'Upcoming' %}
+                    <form method="POST" style="display: inline;">
+                        <input type="hidden" name="action" value="update_status">
+                        <input type="hidden" name="activity_index" value="{{ loop.index0 }}">
+                        <input type="hidden" name="new_status" value="Completed">
+                        <button type="submit" class="status-btn" style="background: #2ecc71; color: white;">Done</button>
+                    </form>
+                    <form method="POST" style="display: inline;">
+                        <input type="hidden" name="action" value="update_status">
+                        <input type="hidden" name="activity_index" value="{{ loop.index0 }}">
+                        <input type="hidden" name="new_status" value="Skipped">
+                        <button type="submit" class="status-btn" style="background: #e74c3c; color: white;">Skip</button>
+                    </form>
+                    {% endif %}
+                    {% endif %}
+                </td>
+                {% endif %}
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% endblock %}

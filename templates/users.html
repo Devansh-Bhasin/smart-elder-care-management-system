@@ -1,0 +1,65 @@
+{% extends "layout.html" %}
+
+{% block title %}User Management{% endblock %}
+
+{% block content %}
+<a href="{{ url_for('dashboard') }}" class="back-link">&larr; Back to Dashboard</a>
+
+<header>
+    <h1>User Management</h1>
+</header>
+<div class="prototype-tag">Admin Access Only</div>
+
+<div style="margin-bottom: 30px; background: rgba(255,255,255,0.05); padding: 20px; border-radius: 8px;">
+    <h3>Add New User (Prototype)</h3>
+    <form onsubmit="event.preventDefault(); alert('User account created in prototype simulation!');">
+        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px;">
+            <div>
+                <label>Username</label>
+                <input type="text" placeholder="e.g. jdoe">
+            </div>
+            <div>
+                <label>Role</label>
+                <select>
+                    <option>Administrator</option>
+                    <option>Nurse</option>
+                    <option>Doctor</option>
+                    <option>Caregiver</option>
+                    <option>Family Member</option>
+                    <option>Resident</option>
+                </select>
+            </div>
+        </div>
+        <button type="submit" style="margin-top: 15px; width: auto; padding: 10px 20px;">Register New User</button>
+    </form>
+</div>
+
+<h3>Current System Users</h3>
+<table>
+    <thead>
+        <tr>
+            <th>Username</th>
+            <th>Role</th>
+            <th>Status</th>
+            <th>Actions</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for u in users %}
+        <tr>
+            <td><b>{{ u.username }}</b></td>
+            <td>
+                <span style="background: #333; padding: 4px 8px; border-radius: 4px;">{{ u.role }}</span>
+            </td>
+            <td style="color: var(--success-color);">Active</td>
+            <td>
+                <button onclick="alert('Modify User: {{ u.username }} (Prototype Modal)');"
+                    style="padding: 5px 10px; font-size: 0.8em; width: auto; margin-right: 5px;">Modify</button>
+                <button onclick="alert('User {{ u.username }} deactivated (Prototype)');"
+                    style="padding: 5px 10px; font-size: 0.8em; width: auto; background: #c0392b;">Deactivate</button>
+            </td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+{% endblock %}

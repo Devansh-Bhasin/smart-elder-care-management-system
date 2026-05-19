@@ -1,0 +1,63 @@
+{% extends "layout.html" %}
+
+{% block title %}Medication Management{% endblock %}
+
+{% block content %}
+<a href="{{ url_for('dashboard') }}" class="back-link">&larr; Back to Dashboard</a>
+
+<header>
+    <h1>Medication Management</h1>
+</header>
+<div class="prototype-tag">Prototype Feature</div>
+
+{% if message %}
+<div class="alert alert-success">{{ message }}</div>
+{% endif %}
+
+<div style="margin-top: 20px;">
+    <h2>Medication Schedule</h2>
+    <table>
+        <thead>
+            <tr>
+                <th>Resident</th>
+                <th>Medication</th>
+                <th>Dosage</th>
+                <th>Frequency</th>
+                <th>Status</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for med in medication_data %}
+            <tr>
+                <td>{{ med.resident }}</td>
+                <td>{{ med.medication }}</td>
+                <td>{{ med.dosage }}</td>
+                <td>{{ med.freq }}</td>
+                <td>
+                    <span
+                        style="padding: 4px 8px; border-radius: 4px; background: {% if med.status == 'Taken' %}rgba(46, 204, 113, 0.2){% elif med.status == 'Overdue' %}rgba(231, 76, 60, 0.2){% else %}rgba(52, 152, 219, 0.2){% endif %};
+                                  color: {% if med.status == 'Taken' %}#2ecc71{% elif med.status == 'Overdue' %}#e74c3c{% else %}#3498db{% endif %};">
+                        {{ med.status }}
+                    </span>
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+
+{% if can_write %}
+<div style="margin-top: 40px; border-top: 1px solid #333; padding-top: 20px;">
+    <h3>Update Prescription (Mockup)</h3>
+    <form method="POST">
+        <label>Resident Name</label>
+        <input type="text" placeholder="Select resident...">
+        <label>Medication</label>
+        <input type="text" placeholder="e.g. Aspirin">
+        <label>Dosage</label>
+        <input type="text" placeholder="e.g. 100mg">
+        <button type="submit" style="margin-top: 10px;">Update Record</button>
+    </form>
+</div>
+{% endif %}
+{% endblock %}

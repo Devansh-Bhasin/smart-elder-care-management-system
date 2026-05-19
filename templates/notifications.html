@@ -1,0 +1,31 @@
+{% extends "layout.html" %}
+
+{% block title %}Notifications & Reminders{% endblock %}
+
+{% block content %}
+<a href="{{ url_for('dashboard') }}" class="back-link">&larr; Back to Dashboard</a>
+
+<header>
+    <h1>Notifications & Reminders</h1>
+</header>
+
+<div style="margin-top: 20px;">
+    {% for note in notifications %}
+    <div class="card"
+        style="margin-bottom: 15px; border-left: 5px solid {% if note.type == 'Medication' %}#3498db{% elif note.type == 'Activity' %}#2ecc71{% else %}#f1c40f{% endif %};">
+        <div style="display: flex; justify-content: space-between;">
+            <span
+                style="font-weight: bold; color: {% if note.type == 'Medication' %}#3498db{% elif note.type == 'Activity' %}#2ecc71{% else %}#f1c40f{% endif %};">{{
+                note.type }}</span>
+            <span style="opacity: 0.6; font-size: 0.8em;">{{ note.status }}</span>
+        </div>
+        <p style="margin-top: 10px;">{{ note.message }}</p>
+    </div>
+    {% endfor %}
+</div>
+
+<div style="text-align: center; margin-top: 30px;">
+    <button class="btn" onclick="alert('Configuration saved (Prototype)');" style="width: auto;">Manage Alert
+        Preferences</button>
+</div>
+{% endblock %}

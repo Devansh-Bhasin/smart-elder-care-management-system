@@ -1,0 +1,39 @@
+{% extends "layout.html" %}
+
+{% block title %}System Audit Logs{% endblock %}
+
+{% block content %}
+<a href="{{ url_for('dashboard') }}" class="back-link">&larr; Back to Dashboard</a>
+
+<header>
+    <h1>System Audit Logs</h1>
+</header>
+<div class="prototype-tag">Admin Access Only</div>
+
+<div style="margin-top: 20px;">
+    <table>
+        <thead>
+            <tr>
+                <th>User</th>
+                <th>Action</th>
+                <th>Target</th>
+                <th>Timestamp</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for log in logs %}
+            <tr>
+                <td><b>{{ log.user }}</b></td>
+                <td>{{ log.action }}</td>
+                <td>{{ log.target }}</td>
+                <td style="color: #888;">{{ log.time }}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+
+<div style="margin-top: 30px; opacity: 0.6; font-style: italic;">
+    Logs are preserved for 90 days as per data compliance policy.
+</div>
+{% endblock %}

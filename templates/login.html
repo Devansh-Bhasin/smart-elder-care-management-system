@@ -1,0 +1,40 @@
+{% extends "layout.html" %}
+
+{% block title %}Login - Elder Care System{% endblock %}
+
+{% block content %}
+<div class="login-box">
+    <h1>Elder Care System</h1>
+    <p style="color: #888;">Secure Login</p>
+
+    {% if error %}
+    <div class="alert alert-error">
+        {{ error }}
+    </div>
+    {% endif %}
+
+    <form method="POST">
+        <div style="text-align: left;">
+            <label>Username</label>
+            <input type="text" name="username" required placeholder="Enter username">
+
+            <label>Password</label>
+            <input type="password" name="password" required placeholder="Enter password">
+        </div>
+        <button type="submit">Log In</button>
+    </form>
+
+    <div
+        style="margin-top: 30px; text-align: left; font-size: 0.9em; color: #666; background-color: #222; padding: 10px; border-radius: 8px;">
+        <strong>Prototype Credentials:</strong>
+        <ul style="margin: 10px 0 0 20px; padding: 0;">
+            <li>admin / admin123</li>
+            <li>nurse / nurse123</li>
+            <li>caregiver / care123</li>
+            <li>doctor / doc123</li>
+            <li>resident1 / res123</li>
+            <li>family1 / fam123</li>
+        </ul>
+    </div>
+</div>
+{% endblock %}

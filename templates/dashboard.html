@@ -1,0 +1,101 @@
+{% extends "layout.html" %}
+
+{% block title %}Dashboard - Elder Care System{% endblock %}
+
+{% block content %}
+<header>
+    <h1>Dashboard</h1>
+    <div>
+        <span style="color: #888; margin-right: 15px;">Logged in as: <b style="color: white;">{{ user }}</b> ({{ role
+            }})</span>
+        <a href="{{ url_for('logout') }}" class="btn"
+            style="width: auto; padding: 8px 16px; background-color: transparent; border: 1px solid #444;">Logout</a>
+    </div>
+</header>
+
+<p style="margin-bottom: 30px; font-size: 1.1em;">Welcome to the Smart Elder Care Management System.</p>
+
+<div class="dashboard-grid">
+
+    {% if 'health:read' in allowed_features %}
+    <div class="card">
+        <h3>Health Monitoring</h3>
+        <p>Track vitals, heart rate, and daily health metrics.</p>
+        <a href="{{ url_for('health_monitoring') }}" class="btn">Access Health Hub</a>
+    </div>
+    {% endif %}
+
+    {% if 'residents:read' in allowed_features %}
+    <div class="card">
+        <h3>Resident Profiles</h3>
+        <p>Manage personal info and emergency contacts.</p>
+        <a href="{{ url_for('residents') }}" class="btn">View Directory</a>
+    </div>
+    {% endif %}
+
+    {% if 'activity:read' in allowed_features %}
+    <div class="card">
+        <h3>Activity Management</h3>
+        <p>Schedule and log resident activities and events.</p>
+        <a href="{{ url_for('activity_management') }}" class="btn">Manage Activities</a>
+    </div>
+    {% endif %}
+
+    {% if 'medication:read' in allowed_features %}
+    <div class="card">
+        <h3>Medication Management</h3>
+        <p>Handle prescriptions and adherence tracking.</p>
+        <a href="{{ url_for('medication') }}" class="btn">Medication Hub</a>
+    </div>
+    {% endif %}
+
+    {% if 'alerts:read' in allowed_features %}
+    <div class="card" style="border-color: var(--danger-color);">
+        <h3 style="color: var(--danger-color);">Emergency Alerts</h3>
+        <p>Trigger immediate alerts for critical situations.</p>
+        <a href="{{ url_for('emergency_alerts') }}" class="btn btn-danger">Emergency Access</a>
+    </div>
+    {% endif %}
+
+    {% if 'reports:read' in allowed_features %}
+    <div class="card">
+        <h3>Reports</h3>
+        <p>View daily summaries and resident status reports.</p>
+        <a href="{{ url_for('reports') }}" class="btn">View Reports</a>
+    </div>
+    {% endif %}
+
+    {% if 'notifications:read' in allowed_features %}
+    <div class="card">
+        <h3>Notifications</h3>
+        <p>System alerts, reminders, and updates.</p>
+        <a href="{{ url_for('notifications') }}" class="btn">Reminders</a>
+    </div>
+    {% endif %}
+
+    {% if 'users:read' in allowed_features %}
+    <div class="card">
+        <h3>User Management</h3>
+        <p>Administer system users and roles.</p>
+        <a href="{{ url_for('user_management') }}" class="btn">Manage Users</a>
+    </div>
+    {% endif %}
+
+    {% if 'audit:read' in allowed_features %}
+    <div class="card">
+        <h3>Audit Logs</h3>
+        <p>Compliance tracking and action history.</p>
+        <a href="{{ url_for('audit_logs') }}" class="btn">View Logs</a>
+    </div>
+    {% endif %}
+
+    {% if 'settings:read' in allowed_features %}
+    <div class="card">
+        <h3>System Settings</h3>
+        <p>Configure alerts and system preferences.</p>
+        <a href="{{ url_for('settings') }}" class="btn">Configuration</a>
+    </div>
+    {% endif %}
+
+</div>
+{% endblock %}

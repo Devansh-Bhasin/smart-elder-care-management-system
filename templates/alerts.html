@@ -1,0 +1,37 @@
+{% extends "layout.html" %}
+
+{% block title %}Emergency Alerts{% endblock %}
+
+{% block content %}
+<a href="{{ url_for('dashboard') }}" class="back-link">&larr; Back to Dashboard</a>
+
+<header>
+    <h1 style="color: var(--danger-color);">Emergency Alerts</h1>
+</header>
+
+{% if message %}
+<div class="alert alert-danger">
+    {{ message }}
+</div>
+{% endif %}
+
+<div style="text-align: center; margin-top: 50px;">
+    <p style="font-size: 1.2em; margin-bottom: 30px;">Press the button below to trigger an immediate emergency alert
+        across the system.</p>
+
+    {% if can_write %}
+    <form method="POST">
+        <button type="submit" class="emergency-btn">
+            TRIGGER EMERGENCY ALERT
+        </button>
+    </form>
+    {% else %}
+    <div class="card"
+        style="max-width: 600px; margin: 0 auto; background: rgba(231, 76, 60, 0.1); border-color: var(--danger-color);">
+        <p style="color: var(--danger-color); font-weight: bold;">VIEW ONLY STATUS</p>
+        <p style="opacity: 0.8;">You are monitoring alerts. You do not have permission to trigger a manual system-wide
+            alert.</p>
+    </div>
+    {% endif %}
+</div>
+{% endblock %}

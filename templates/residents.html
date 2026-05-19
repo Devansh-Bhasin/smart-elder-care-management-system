@@ -1,0 +1,51 @@
+{% extends "layout.html" %}
+
+{% block title %}Resident Profile Management{% endblock %}
+
+{% block content %}
+<a href="{{ url_for('dashboard') }}" class="back-link">&larr; Back to Dashboard</a>
+
+<header>
+    <h1>Resident Profile Management</h1>
+</header>
+<div class="prototype-tag">Prototype Feature</div>
+
+<div style="margin-top: 20px;">
+    <h2>Resident Directory</h2>
+    <table>
+        <thead>
+            <tr>
+                <th>Name</th>
+                <th>Age</th>
+                <th>Room</th>
+                <th>Emergency Contact</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for r in residents %}
+            <tr>
+                <td><b>{{ r.name }}</b></td>
+                <td>{{ r.age }}</td>
+                <td>{{ r.room }}</td>
+                <td>{{ r.emergency_contact }}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+
+{% if can_write %}
+<div style="margin-top: 40px; border-top: 1px solid #333; padding-top: 20px;">
+    <h3>Add New Resident (Mockup)</h3>
+    <form onsubmit="event.preventDefault(); alert('Resident added to prototype simulation!');">
+        <label>Full Name</label>
+        <input type="text" placeholder="e.g. John Doe">
+        <label>Age</label>
+        <input type="number" placeholder="80">
+        <label>Room Number</label>
+        <input type="text" placeholder="201">
+        <button type="submit" style="margin-top: 10px;">Register Resident</button>
+    </form>
+</div>
+{% endif %}
+{% endblock %}

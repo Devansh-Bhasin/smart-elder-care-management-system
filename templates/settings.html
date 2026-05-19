@@ -1,0 +1,38 @@
+{% extends "layout.html" %}
+
+{% block title %}System Configuration{% endblock %}
+
+{% block content %}
+<a href="{{ url_for('dashboard') }}" class="back-link">&larr; Back to Dashboard</a>
+
+<header>
+    <h1>System Configuration</h1>
+</header>
+<div class="prototype-tag">Admin Access Only</div>
+
+{% if message %}
+<div class="alert alert-success">{{ message }}</div>
+{% endif %}
+
+<div class="card" style="margin-top: 20px;">
+    <h3>Health Alert Thresholds</h3>
+    <form method="POST">
+        <label>High Heart Rate Trigger (BPM)</label>
+        <input type="number" value="100">
+        <label>High Temperature Trigger (°C)</label>
+        <input type="text" value="38.0">
+        <label>Low Oxygen Trigger (%)</label>
+        <input type="number" value="92">
+
+        <h3 style="margin-top: 30px;">System Preferences</h3>
+        <label>Language</label>
+        <select>
+            <option>English</option>
+            <option>Spanish</option>
+            <option>French</option>
+        </select>
+
+        <button type="submit" style="margin-top: 20px;">Save Configuration</button>
+    </form>
+</div>
+{% endblock %}
